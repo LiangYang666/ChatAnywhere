@@ -57,8 +57,7 @@ class ChatAnywhereApp:
         self.ent_proxy = tk.Entry(self.master)
         self.ent_proxy.insert(0, self.https_proxy)
         self.ent_proxy.grid(row=row, column=1, padx=10, pady=10)
-
-
+        # 提交按钮
         row += 1
         self.btn_submit = tk.Button(self.master, text="修改", command=self.submit)
         self.btn_submit.grid(row=row, column=1, padx=10, pady=10)
