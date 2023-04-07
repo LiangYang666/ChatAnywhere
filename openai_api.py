@@ -62,10 +62,6 @@ def get_response_stream_generate_from_ChatGPT_API(text, apikey, message_history,
                                 elif 'content' in delta:
                                     delta_content = delta['content']
                                     i += 1
-                                    if i < 40:
-                                        print(delta_content, end="")
-                                    elif i == 40:
-                                        print("......")
                                     one_message['content'] = one_message['content'] + delta_content
                                     yield delta_content
 

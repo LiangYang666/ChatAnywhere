@@ -4,7 +4,6 @@ import tkinter as tk
 import pyperclip
 import keyboard
 import win32api
-import win32gui
 from openai_api import get_response_stream_generate_from_ChatGPT_API
 
 API_KEY = os.environ.get("OPENAI_API_KEY")
@@ -25,7 +24,7 @@ class TranslatorApp:
         self.copy_button = tk.Button(master, text="复制到剪切板", command=self.copy)
         self.copy_button.pack()
 
-        # 绑定快捷键 释放后再调用
+        # 绑定快捷键
         keyboard.add_hotkey('ctrl+alt+\\', self.translate)
 
     def center_window(self):
@@ -112,3 +111,5 @@ if __name__ == '__main__':
     root = tk.Tk()
     app = TranslatorApp(root)
     root.mainloop()
+    keyboard.unhook_all_hotkeys()
+
