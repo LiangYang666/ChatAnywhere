@@ -88,11 +88,7 @@ class TranslatorApp:
         for i in range(len(msg)):
             keyboard.press_and_release('left')
 
-
         for g in generate():
-            # 将获得的内容进行输出
-            print("gen:\t", g)
-            keyboard.write(g)
             # 如果用户按下任意键 停止
             if keyboard.is_pressed('ctrl'):
                 print("break")
@@ -101,6 +97,9 @@ class TranslatorApp:
                 while keyboard.is_pressed('ctrl'):
                     time.sleep(0.1)
                 break
+            # 将获得的内容进行输出
+            print("gen:\t", g)
+            keyboard.write(g)
         keyboard.write("】")
         for i in range(len(msg)):
             keyboard.press_and_release('delete')
