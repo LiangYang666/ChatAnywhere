@@ -1,4 +1,5 @@
 # Chat-Anywhere
+在任意软件内使用快捷键补全选中文本，word和wps中都可以方便的使用
 
 ## Star the [Repository](https://github.com/LiangYang666/ChatAnywhere)  
 ## 特性
