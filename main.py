@@ -10,47 +10,19 @@ API_KEY = os.environ.get("OPENAI_API_KEY")
 os.environ["https_proxy"] = "socks5://127.0.0.1:7890"
 
 
-class TranslatorApp:
+class ChatAnywhereApp:
     def __init__(self, master):
         self.master = master
-        self.width = 300  # 窗口宽度
-        self.height = 200  # 窗口高度
-
-        # 创建翻译框
-        self.textbox = tk.Text(master, height=10)
-        self.textbox.pack()
-
-        # 创建复制按钮
-        self.copy_button = tk.Button(master, text="复制到剪切板", command=self.copy)
-        self.copy_button.pack()
-
+        self.width = 100  # 窗口宽度
+        self.height = 100  # 窗口高度
+        self.master.title("ChatAnywhere")
+        self.master.iconbitmap("chatgpt.ico")
+        self.label = tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止", font=("Arial", 15))
+        self.label.pack()
         # 绑定快捷键
-        keyboard.add_hotkey('ctrl+alt+\\', self.translate)
+        keyboard.add_hotkey('ctrl+alt+\\', self.complete)
 
-    def center_window(self):
-        # 计算窗口的中心位置
-        screen_width = self.master.winfo_screenwidth()
-        screen_height = self.master.winfo_screenheight()
-        x = (screen_width - self.width) // 2
-        y = (screen_height - self.height) // 2
-
-        # 如果按下快捷键时鼠标指针在屏幕的右边，则将窗口置于鼠标左侧
-        mouse_x, mouse_y = win32api.GetCursorPos()
-        if mouse_x > screen_width // 2:
-            x = mouse_x - 10 - self.width
-
-        # 如果按下快捷键时鼠标指针在屏幕的下方，则将窗口置于鼠标上方
-        if mouse_y > screen_height // 2:
-            y = mouse_y - 10 - self.height
-
-        # 设置窗口居中显示
-        self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, x, y))
-
-    def copy(self):
-        # 将翻译框内容复制到剪切板
-        pyperclip.copy(self.textbox.get('1.0', tk.END))
-
-    def translate(self):
+    def complete(self):
         # 等待三个键都释放
         while keyboard.is_pressed('alt') or keyboard.is_pressed('\\') or keyboard.is_pressed('ctrl'):
             time.sleep(0.1)
@@ -109,7 +81,7 @@ class TranslatorApp:
 
 if __name__ == '__main__':
     root = tk.Tk()
-    app = TranslatorApp(root)
+    app = ChatAnywhereApp(root)
     root.mainloop()
     keyboard.unhook_all_hotkeys()
 
