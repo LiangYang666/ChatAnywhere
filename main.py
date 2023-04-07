@@ -17,8 +17,11 @@ class ChatAnywhereApp:
         self.height = 100  # 窗口高度
         self.master.title("ChatAnywhere")
         self.master.iconbitmap("chatgpt.ico")
-        self.label = tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止", font=("Arial", 15))
-        self.label.pack()
+        tk.Label(self.master, text="ChatAnywhere", font=("Arial", 20)).pack()
+        tk.Label(self.master, text="\n使用方法:", font=("Arial", 18)).pack()
+        tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止当前补全", font=("Arial", 15)).pack()
+        tk.Label(self.master, text="\n\n使用ChatAnywhere时请保证该窗口后台运行", font=("Arial", 12)).pack()
+
         # 绑定快捷键
         keyboard.add_hotkey('ctrl+alt+\\', self.complete)
 
