@@ -1,0 +1,4 @@
+pyperclip
+keyboard
+pywin32
+requests
