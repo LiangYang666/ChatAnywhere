@@ -6,8 +6,10 @@ import keyboard
 import win32api
 from openai_api import get_response_stream_generate_from_ChatGPT_API
 
-API_KEY = os.environ.get("OPENAI_API_KEY")
-os.environ["https_proxy"] = "socks5://127.0.0.1:7890"
+API_KEY = os.environ.get("OPENAI_API_KEY")      # 可在此处修改默认的 API_KEY = "sk-xxxx"，或在环境变量中设置OPENAI_API_KEY，或者在窗口中设置
+https_proxy = os.environ.get("https_proxy", "socks5://127.0.0.1:7890")     # 可在此处修改默认的代理，或在环境变量中设置https_proxy，或者在窗口中设置
+
+os.environ["https_proxy"] = https_proxy
 
 
 class ChatAnywhereApp:
@@ -17,6 +19,7 @@ class ChatAnywhereApp:
         self.height = 100  # 窗口高度
         self.master.title("ChatAnywhere")
         self.master.iconbitmap("chatgpt.ico")
+        self.https_proxy = https_proxy
         self.apikey = API_KEY
         self.complete_number = 150
         self.temperature = 0.9
@@ -47,6 +50,14 @@ class ChatAnywhereApp:
         self.ent_temperature = tk.Entry(self.master)
         self.ent_temperature.insert(0, str(self.temperature))
         self.ent_temperature.grid(row=row, column=1, padx=10, pady=10)
+        # 代理设置
+        row += 1
+        self.lbl_proxy = tk.Label(self.master, text="代理设置:")
+        self.lbl_proxy.grid(row=row, column=0, padx=10, pady=10)
+        self.ent_proxy = tk.Entry(self.master)
+        self.ent_proxy.insert(0, self.https_proxy)
+        self.ent_proxy.grid(row=row, column=1, padx=10, pady=10)
+
 
         row += 1
         self.btn_submit = tk.Button(self.master, text="修改", command=self.submit)
@@ -60,6 +71,8 @@ class ChatAnywhereApp:
         self.apikey = self.ent_apikey.get()
         self.complete_number = int(self.ent_number.get())
         self.temperature = float(self.ent_temperature.get())
+        self.https_proxy = self.ent_proxy.get()
+        os.environ["https_proxy"] = self.https_proxy
         # 窗口提示修改成功
         win32api.MessageBox(0, "修改成功", "ChatAnywhere")
         print("修改成功")
