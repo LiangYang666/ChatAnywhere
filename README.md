@@ -7,8 +7,11 @@
 > 编写文档的好助手  
 
 ## 演示动图
-选中文本作为上下文提示，按下快捷键`Ctrl+Alt+\`激活补全
+选中文本作为上下文提示，按下快捷键`Ctrl+Alt+\`激活补全，开始后将会自动逐字输出补全的内容
+1. word中使用  
 ![演示](https://user-images.githubusercontent.com/38237931/230561942-a58766e4-6806-4b79-a304-5f690b49d7bb.gif)
+2. 微信聊天中使用  
+![聊天框](https://user-images.githubusercontent.com/38237931/230566611-6a816e13-5ec4-4eb4-8a2f-18e97d49c284.gif)
 
 
 ## 设置界面
