@@ -4,9 +4,11 @@ import requests
 
 
 def get_response_stream_generate_from_ChatGPT_API(text, apikey, message_history,
-                                                  model="gpt-3.5-turbo", temperature=0.9, presence_penalty=0, max_tokens=2000):
+                                                  model="gpt-3.5-turbo", temperature=0.9, presence_penalty=0,
+                                                  max_tokens=2000, complete_number=150):
     """
     从ChatGPT API获取回复
+    :param complete_number:
     :param apikey:
     :param text: 用户输入的文本
     :param message_history: 消息历史
@@ -20,7 +22,7 @@ def get_response_stream_generate_from_ChatGPT_API(text, apikey, message_history,
         print("apikey is None")
         return
 
-    message_prompt = [{"role": "system", "content": "你是一个AI文本补全助手，用户输入一段文字，你需要对文字内容进行补全，补全150字以内"}]
+    message_prompt = [{"role": "system", "content": f"你是一个AI文本补全助手，用户输入一段文字，你需要进行补全，你的补全内容保持在{complete_number}字以内"}]
     message_context = message_prompt + [{"role": "user", "content": text}]
 
     header = {"Content-Type": "application/json",

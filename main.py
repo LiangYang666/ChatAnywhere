@@ -17,13 +17,52 @@ class ChatAnywhereApp:
         self.height = 100  # 窗口高度
         self.master.title("ChatAnywhere")
         self.master.iconbitmap("chatgpt.ico")
-        tk.Label(self.master, text="ChatAnywhere", font=("Arial", 20)).pack()
-        tk.Label(self.master, text="\n使用方法:", font=("Arial", 18)).pack()
-        tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止当前补全", font=("Arial", 15)).pack()
-        tk.Label(self.master, text="\n\n使用ChatAnywhere时请保证该窗口后台运行", font=("Arial", 12)).pack()
+        self.apikey = API_KEY
+        self.complete_number = 150
+        self.temperature = 0.9
+        tk.Label(self.master, text="ChatAnywhere", font=("Arial", 20)).grid(row=0, column=0, columnspan=2, padx=10, pady=10)
+        tk.Label(self.master, text="\n使用方法:", font=("Arial", 18)).grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+        tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止当前补全", font=("Arial", 15)).grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+        tk.Label(self.master, text="\n\n使用ChatAnywhere时请保证该窗口后台运行\n-----------------------------------\n\n设置", font=("Arial", 12)).grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+        row = 3
+        # api_key
+        row += 1
+        self.lbl_apikey = tk.Label(self.master, text="api_key:")
+        self.lbl_apikey.grid(row=row, column=0, padx=10, pady=10)
+        self.ent_apikey = tk.Entry(self.master)
+        self.ent_apikey.insert(0, API_KEY)
+        self.ent_apikey.grid(row=row, column=1, padx=10, pady=10)
+        # 补全文字数量限制
+        row += 1
+        self.lbl_number = tk.Label(self.master, text="补全文字数量限制:")
+        self.lbl_number.grid(row=row, column=0, padx=10, pady=10)
+        self.ent_number = tk.Entry(self.master)
+        self.ent_number.insert(0, str(self.complete_number))
+        self.ent_number.grid(row=row, column=1, padx=10, pady=10)
+        # temperature设置
+        row += 1
+        self.lbl_temperature = tk.Label(self.master, text="temperature:")
+        self.lbl_temperature.grid(row=row, column=0, padx=10, pady=10)
+        self.ent_temperature = tk.Entry(self.master)
+        self.ent_temperature.insert(0, str(self.temperature))
+        self.ent_temperature.grid(row=row, column=1, padx=10, pady=10)
+
+        row += 1
+        self.btn_submit = tk.Button(self.master, text="修改", command=self.submit)
+        self.btn_submit.grid(row=row, column=1, padx=10, pady=10)
 
         # 绑定快捷键
         keyboard.add_hotkey('ctrl+alt+\\', self.complete)
+
+    def submit(self):
+        # 提交修改
+        self.apikey = self.ent_apikey.get()
+        self.complete_number = int(self.ent_number.get())
+        self.temperature = float(self.ent_temperature.get())
+        # 窗口提示修改成功
+        win32api.MessageBox(0, "修改成功", "ChatAnywhere")
+        print("修改成功")
 
     def complete(self):
         # 等待三个键都释放
@@ -53,7 +92,9 @@ class ChatAnywhereApp:
         msg = "【请稍等，等待补全】"
         keyboard.write(msg)
         message_history = []
-        generate = get_response_stream_generate_from_ChatGPT_API(original_text, API_KEY, message_history)
+        generate = get_response_stream_generate_from_ChatGPT_API(original_text, API_KEY, message_history,
+                                                                 temperature=self.temperature,
+                                                                 complete_number=self.complete_number)
         # 删除提示字符
         for i in range(len(msg)):
             keyboard.press_and_release('backspace')
@@ -65,15 +106,16 @@ class ChatAnywhereApp:
         for g in generate():
             # 如果用户按下任意键 停止
             if keyboard.is_pressed('ctrl'):
-                print("break")
+                print("\n--用户终止")
                 keyboard.write("--用户终止")
                 time.sleep(0.1)
                 while keyboard.is_pressed('ctrl'):
                     time.sleep(0.1)
                 break
             # 将获得的内容进行输出
-            print("gen:\t", g)
+            print(g, end="")
             keyboard.write(g)
+        print()
         keyboard.write("】")
         for i in range(len(msg)):
             keyboard.press_and_release('delete')
