@@ -110,7 +110,7 @@ class ChatAnywhereApp:
         # 删除提示字符
         for i in range(len(msg)):
             keyboard.press_and_release('backspace')
-        msg = " << 请勿其它操作，长按ctrl键终止"
+        msg = " << 请勿其它操作，长按ctrl键终止】"
         keyboard.write("【"+msg)
         for i in range(len(msg)):
             keyboard.press_and_release('left')
@@ -119,11 +119,8 @@ class ChatAnywhereApp:
             # 如果用户按下任意键 停止
             if keyboard.is_pressed('ctrl'):
                 print("\n--用户终止")
-                keyboard.write("--用户终止")
-                time.sleep(0.1)
-                while keyboard.is_pressed('ctrl'):
-                    time.sleep(0.1)
-                break
+                keyboard.write(" >> 用户终止")
+                return
             # 将获得的内容进行输出
             print(g, end="")
             keyboard.write(g)
