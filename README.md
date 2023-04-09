@@ -1,5 +1,7 @@
 # Chat-Anywhere
-在任意软件内使用快捷键补全选中文本，word和wps中都可以方便的使用
+使用GPT-3.5 API创建的Copilot，支持office、word、wps等软件中使用  
+在任意软件内使用快捷键补全选中文本，word和wps中都可以方便的使用  
+
 
 ## Star the [Repository](https://github.com/LiangYang666/ChatAnywhere)  
 ## 特性
