@@ -6,8 +6,8 @@ import keyboard
 import win32api
 from openai_api import get_response_stream_generate_from_ChatGPT_API
 
-API_KEY = os.environ.get("OPENAI_API_KEY")      # 可在此处修改默认的 API_KEY = "sk-xxxx"，或在环境变量中设置OPENAI_API_KEY，或者在窗口中设置
-https_proxy = os.environ.get("https_proxy", "socks5://127.0.0.1:7890")     # 可在此处修改默认的代理，或在环境变量中设置https_proxy，或者在窗口中设置
+API_KEY = os.environ.get("OPENAI_API_KEY")  # 可在此处修改默认的 API_KEY = "sk-xxxx"，或在环境变量中设置OPENAI_API_KEY，或者在窗口中设置
+https_proxy = os.environ.get("https_proxy", "socks5://127.0.0.1:7890")  # 可在此处修改默认的代理，或在环境变量中设置https_proxy，或者在窗口中设置
 
 os.environ["https_proxy"] = https_proxy
 
@@ -23,11 +23,16 @@ class ChatAnywhereApp:
         self.apikey = API_KEY
         self.complete_number = 150
         self.temperature = 0.9
-        tk.Label(self.master, text="ChatAnywhere", font=("Arial", 20)).grid(row=0, column=0, columnspan=2, padx=10, pady=10)
-        tk.Label(self.master, text="\n使用方法:", font=("Arial", 18)).grid(row=1, column=0, columnspan=2, padx=10, pady=10)
-        tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止当前补全", font=("Arial", 15)).grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+        tk.Label(self.master, text="ChatAnywhere", font=("Arial", 20)).grid(row=0, column=0, columnspan=2, padx=10,
+                                                                            pady=10)
+        tk.Label(self.master, text="\n使用方法:", font=("Arial", 18)).grid(row=1, column=0, columnspan=2, padx=10,
+                                                                           pady=10)
+        tk.Label(self.master, text="选中文字，按下Ctrl+Alt+\\开始补全\n长按Ctrl停止当前补全", font=("Arial", 15)).grid(
+            row=2, column=0, columnspan=2, padx=10, pady=10)
 
-        tk.Label(self.master, text="\n\n使用ChatAnywhere时请保证该窗口后台运行\n-----------------------------------\n\n设置", font=("Arial", 12)).grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+        tk.Label(self.master,
+                 text="\n\n使用ChatAnywhere时请保证该窗口后台运行\n-----------------------------------\n\n设置",
+                 font=("Arial", 12)).grid(row=3, column=0, columnspan=2, padx=10, pady=10)
         row = 3
         # api_key
         row += 1
@@ -72,8 +77,12 @@ class ChatAnywhereApp:
         self.temperature = float(self.ent_temperature.get())
         self.https_proxy = self.ent_proxy.get()
         os.environ["https_proxy"] = self.https_proxy
-        # 窗口提示修改成功
-        win32api.MessageBox(0, "修改成功", "ChatAnywhere")
+        self.btn_submit["text"] = "修改成功"
+
+        def reset():
+            self.btn_submit["text"] = "修改"
+
+        self.master.after(700, reset)
         print("修改成功")
 
     def complete(self):
@@ -111,7 +120,7 @@ class ChatAnywhereApp:
         for i in range(len(msg)):
             keyboard.press_and_release('backspace')
         msg = " << 请勿其它操作，长按ctrl键终止】"
-        keyboard.write("【"+msg)
+        keyboard.write("【" + msg)
         for i in range(len(msg)):
             keyboard.press_and_release('left')
 
@@ -138,4 +147,3 @@ if __name__ == '__main__':
     app = ChatAnywhereApp(root)
     root.mainloop()
     keyboard.unhook_all_hotkeys()
-
